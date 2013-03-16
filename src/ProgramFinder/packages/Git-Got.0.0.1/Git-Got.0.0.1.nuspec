@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Git-Got</id>
+    <version>0.0.1</version>
+    <title>Git-Got</title>
+    <authors>cb</authors>
+    <owners>cb</owners>
+    <projectUrl>http://github.com/cbilson/Git-Got/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Git commandlets, using libgitsharp</description>
+    <summary>Git commandlets, using libgitsharp</summary>
+    <tags>git dvcs version-control</tags>
+    <references>
+      <reference file="LibGit2Sharp.dll" />
+    </references>
+  </metadata>
+</package>
