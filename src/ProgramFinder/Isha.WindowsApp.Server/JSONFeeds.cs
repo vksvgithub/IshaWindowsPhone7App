@@ -1,17 +1,16 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-
-using System.Windows.Input;
-
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Threading;
-using System.Runtime.Serialization.Json;
-//using Windows.Foundation.Collections;
+using System;
 using System.Collections;
+using System.Linq;
+using System.Net;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using System.Xml.Linq;
 
 
 namespace Isha.WindowsApp.Server
@@ -144,6 +143,39 @@ namespace Isha.WindowsApp.Server
                     throw e;
             }
             return result;
+        }
+
+        /// <summary>
+        /// Retrieves the RSS document containing Isha blog posts and returns 
+        /// the RSS items.
+        /// </summary>
+        /// <returns>RSS item, one for each post</returns>
+        public static async Task<RSSEntry[]> GetIshaBlogPosts()
+        {
+            string feedUrl = @"http://feeds.ishafoundation.org/IshaBlog";
+
+            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(new Uri(feedUrl));
+
+            var task = Task.Factory.FromAsync<WebResponse>(webRequest.BeginGetResponse, webRequest.EndGetResponse,
+                null);
+            await task;
+
+            WebResponse response = task.Result;
+            XDocument rssXDocument = XDocument.Load(response.GetResponseStream());
+
+            // To do: Pala 3/29/2013
+            // note, in the parsing below, the string pubDate contains timezone
+            // as UTC, and yet the parsing creates it as local time. For now, 
+            // explicitly forcing it to be UTC. Not sure if this is a hack
+            // Need to follow up
+            var rssItems = from item in rssXDocument.Descendants("item")
+                           let title = item.Element("title").Value
+                           let link = item.Element("link").Value
+                           let pubDate = DateTime.SpecifyKind(DateTime.Parse(item.Element("pubDate").Value), DateTimeKind.Utc)
+                           let description = item.Element("description").Value
+                           select new RSSEntry(title, description, link, pubDate);
+
+            return rssItems.ToArray();
         }
     }
 }

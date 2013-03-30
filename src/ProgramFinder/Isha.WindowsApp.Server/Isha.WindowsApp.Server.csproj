@@ -41,6 +41,7 @@
     <Compile Include="ProgramListModel.cs" />
     <Compile Include="ProgramOverViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RSSEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
