@@ -50,7 +50,7 @@ namespace Isha.WindowsApp.Server
                 {
                     using (var reader = new System.IO.StreamReader(responseStream))
                     {
-                        data = reader.ReadToEnd();
+                        data = await reader.ReadToEndAsync();
                     }
                 }
                 
@@ -102,7 +102,7 @@ namespace Isha.WindowsApp.Server
                 {
                     using (var reader = new System.IO.StreamReader(responseStream))
                     {
-                        data = reader.ReadToEnd();
+                        data = await reader.ReadToEndAsync();
                     }
                 }
                 
